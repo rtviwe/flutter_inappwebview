@@ -84,13 +84,13 @@ public class WebViewChannelDelegate: ChannelDelegate {
                 let contentWorldMap = arguments!["contentWorld"] as? [String:Any?]
                 if #available(macOS 11.0, *), let contentWorldMap = contentWorldMap {
                     let contentWorld = WKContentWorld.fromMap(map: contentWorldMap, windowId: webView.windowId)!
-                    webView.evaluateJavascript(source: source, contentWorld: contentWorld) { (value) in
-                        result(value)
-                    }
+                    // webView.evaluateJavascript(source: source, contentWorld: contentWorld) { (value) in
+                    //     result(value)
+                    // }
                 } else {
-                    webView.evaluateJavascript(source: source) { (value) in
-                        result(value)
-                    }
+                    // webView.evaluateJavascript(source: source) { (value) in
+                    //     result(value)
+                    // }
                 }
             }
             else {

@@ -31,25 +31,25 @@ public class WebMessagePort: NSObject {
         self.isStarted = true
         if let webMessageChannel = webMessageChannel, let webView = webMessageChannel.webView {
             let index = name == "port1" ? 0 : 1
-            webView.evaluateJavascript(source: """
-            (function() {
-                var webMessageChannel = \(WEB_MESSAGE_CHANNELS_VARIABLE_NAME)["\(webMessageChannel.id)"];
-                if (webMessageChannel != null) {
-                    webMessageChannel.\(self.name).onmessage = function (event) {
-                        window.webkit.messageHandlers["onWebMessagePortMessageReceived"].postMessage({
-                            "webMessageChannelId": "\(webMessageChannel.id)",
-                            "index": \(String(index)),
-                            "message": {
-                                "data": window.ArrayBuffer != null && event.data instanceof ArrayBuffer ? Array.from(new Uint8Array(event.data)) : (event.data != null ? event.data.toString() : null),
-                                "type": window.ArrayBuffer != null && event.data instanceof ArrayBuffer ? 1 : 0
-                            }
-                        });
-                    }
-                }
-            })();
-            """) { (_) in
-                completionHandler?(nil)
-            }
+            // webView.evaluateJavascript(source: """
+            // (function() {
+            //     var webMessageChannel = \(WEB_MESSAGE_CHANNELS_VARIABLE_NAME)["\(webMessageChannel.id)"];
+            //     if (webMessageChannel != null) {
+            //         webMessageChannel.\(self.name).onmessage = function (event) {
+            //             window.webkit.messageHandlers["onWebMessagePortMessageReceived"].postMessage({
+            //                 "webMessageChannelId": "\(webMessageChannel.id)",
+            //                 "index": \(String(index)),
+            //                 "message": {
+            //                     "data": window.ArrayBuffer != null && event.data instanceof ArrayBuffer ? Array.from(new Uint8Array(event.data)) : (event.data != null ? event.data.toString() : null),
+            //                     "type": window.ArrayBuffer != null && event.data instanceof ArrayBuffer ? 1 : 0
+            //                 }
+            //             });
+            //         }
+            //     }
+            // })();
+            // """) { (_) in
+            //     completionHandler?(nil)
+            // }
         } else {
             completionHandler?(nil)
         }
@@ -87,9 +87,9 @@ public class WebMessagePort: NSObject {
                 }
             })();
             """
-            webView.evaluateJavascript(source: source) { (_) in
-                completionHandler?(nil)
-            }
+            // webView.evaluateJavascript(source: source) { (_) in
+            //     completionHandler?(nil)
+            // }
         } else {
             completionHandler?(nil)
         }
@@ -110,9 +110,9 @@ public class WebMessagePort: NSObject {
                 }
             })();
             """
-            webView.evaluateJavascript(source: source) { (_) in
-                completionHandler?(nil)
-            }
+            // webView.evaluateJavascript(source: source) { (_) in
+            //     completionHandler?(nil)
+            // }
         } else {
             completionHandler?(nil)
         }

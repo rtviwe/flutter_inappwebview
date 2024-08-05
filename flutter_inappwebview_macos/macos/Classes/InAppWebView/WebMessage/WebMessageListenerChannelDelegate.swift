@@ -39,9 +39,9 @@ public class WebMessageListenerChannelDelegate: ChannelDelegate {
                     }
                 })();
                 """
-                webView.evaluateJavascript(source: source) { (_) in
-                    result(true)
-                }
+                // webView.evaluateJavascript(source: source) { (_) in
+                //     result(true)
+                // }
             } else {
                result(true)
             }

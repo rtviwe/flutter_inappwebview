@@ -355,11 +355,11 @@ public class InAppWebView: WKWebView, WKUIDelegate,
                 let contentWorlds = configuration.userContentController.getContentWorlds(with: windowId)
                 for contentWorld in contentWorlds {
                     let source = WINDOW_ID_INITIALIZE_JS_SOURCE.replacingOccurrences(of: PluginScriptsUtil.VAR_PLACEHOLDER_VALUE, with: String(windowId))
-                    evaluateJavascript(source: source, contentWorld: contentWorld)
+                    // evaluateJavascript(source: source, contentWorld: contentWorld)
                 }
             } else {
                 let source = WINDOW_ID_INITIALIZE_JS_SOURCE.replacingOccurrences(of: PluginScriptsUtil.VAR_PLACEHOLDER_VALUE, with: String(windowId))
-                evaluateJavascript(source: source)
+                // evaluateJavascript(source: source)
             }
         }
     }
@@ -763,29 +763,29 @@ public class InAppWebView: WKWebView, WKUIDelegate,
     }
     
     public func enablePluginScriptAtRuntime(flagVariable: String, enable: Bool, pluginScript: PluginScript) {
-        evaluateJavascript(source: flagVariable) { (alreadyLoaded) in
-            if let alreadyLoaded = alreadyLoaded as? Bool, alreadyLoaded {
-                let enableSource = "\(flagVariable) = \(enable);"
-                if #available(macOS 11.0, *), pluginScript.requiredInAllContentWorlds {
-                    for contentWorld in self.configuration.userContentController.contentWorlds {
-                    }
-                } else {
-                }
-                if !enable {
-                    self.configuration.userContentController.removePluginScripts(with: pluginScript.groupName!)
-                }
-            }
-            else if enable {
-                if #available(macOS 11.0, *), pluginScript.requiredInAllContentWorlds {
-                    for contentWorld in self.configuration.userContentController.contentWorlds {
-                        self.configuration.userContentController.addPluginScript(pluginScript)
-                    }
-                } else {
-                    self.configuration.userContentController.addPluginScript(pluginScript)
-                }
-                self.configuration.userContentController.sync(scriptMessageHandler: self)
-            }
-        }
+        // evaluateJavascript(source: flagVariable) { (alreadyLoaded) in
+        //     if let alreadyLoaded = alreadyLoaded as? Bool, alreadyLoaded {
+        //         let enableSource = "\(flagVariable) = \(enable);"
+        //         if #available(macOS 11.0, *), pluginScript.requiredInAllContentWorlds {
+        //             for contentWorld in self.configuration.userContentController.contentWorlds {
+        //             }
+        //         } else {
+        //         }
+        //         if !enable {
+        //             self.configuration.userContentController.removePluginScripts(with: pluginScript.groupName!)
+        //         }
+        //     }
+        //     else if enable {
+        //         if #available(macOS 11.0, *), pluginScript.requiredInAllContentWorlds {
+        //             for contentWorld in self.configuration.userContentController.contentWorlds {
+        //                 self.configuration.userContentController.addPluginScript(pluginScript)
+        //             }
+        //         } else {
+        //             self.configuration.userContentController.addPluginScript(pluginScript)
+        //         }
+        //         self.configuration.userContentController.sync(scriptMessageHandler: self)
+        //     }
+        // }
     }
     
     @available(*, deprecated, message: "Use InAppWebViewManager.clearAllCache instead.")
@@ -803,26 +803,26 @@ public class InAppWebView: WKWebView, WKUIDelegate,
             jsToInject = String(format: wrapper, sourceString!)
         }
         
-        evaluateJavaScript(jsToInject) { (value, error) in
-            guard let completionHandler = completionHandler else {
-                return
-            }
+        // evaluateJavaScript(jsToInject) { (value, error) in
+        //     guard let completionHandler = completionHandler else {
+        //         return
+        //     }
             
-            if let error = error {
-                let userInfo = (error as NSError).userInfo
-                let errorMessage = userInfo["WKJavaScriptExceptionMessage"] ??
-                                   userInfo["NSLocalizedDescription"] as? String ??
-                                   error.localizedDescription
-                self.channelDelegate?.onConsoleMessage(message: String(describing: errorMessage), messageLevel: 3)
-            }
+        //     if let error = error {
+        //         let userInfo = (error as NSError).userInfo
+        //         let errorMessage = userInfo["WKJavaScriptExceptionMessage"] ??
+        //                            userInfo["NSLocalizedDescription"] as? String ??
+        //                            error.localizedDescription
+        //         self.channelDelegate?.onConsoleMessage(message: String(describing: errorMessage), messageLevel: 3)
+        //     }
             
-            if value == nil {
-                completionHandler(nil)
-                return
-            }
+        //     if value == nil {
+        //         completionHandler(nil)
+        //         return
+        //     }
             
-            completionHandler(value)
-        }
+        //     completionHandler(value)
+        // }
     }
     
     @available(macOS 11.0, *)
@@ -837,53 +837,53 @@ public class InAppWebView: WKWebView, WKUIDelegate,
         
         jsToInject = configuration.userContentController.generateCodeForScriptEvaluation(scriptMessageHandler: self, source: jsToInject, contentWorld: contentWorld)
         
-        evaluateJavaScript(jsToInject, frame: nil, contentWorld: contentWorld) { (evalResult) in
-            guard let completionHandler = completionHandler else {
-                return
-            }
+        // evaluateJavaScript(jsToInject, frame: nil, contentWorld: contentWorld) { (evalResult) in
+        //     guard let completionHandler = completionHandler else {
+        //         return
+        //     }
             
-            switch (evalResult) {
-            case .success(let value):
-                completionHandler(value)
-                return
-            case .failure(let error):
-                let userInfo = (error as NSError).userInfo
-                let errorMessage = userInfo["WKJavaScriptExceptionMessage"] ??
-                                   userInfo["NSLocalizedDescription"] as? String ??
-                                   error.localizedDescription
-                self.channelDelegate?.onConsoleMessage(message: String(describing: errorMessage), messageLevel: 3)
-                break
-            }
+        //     switch (evalResult) {
+        //     case .success(let value):
+        //         completionHandler(value)
+        //         return
+        //     case .failure(let error):
+        //         let userInfo = (error as NSError).userInfo
+        //         let errorMessage = userInfo["WKJavaScriptExceptionMessage"] ??
+        //                            userInfo["NSLocalizedDescription"] as? String ??
+        //                            error.localizedDescription
+        //         self.channelDelegate?.onConsoleMessage(message: String(describing: errorMessage), messageLevel: 3)
+        //         break
+        //     }
             
-            completionHandler(nil)
-        }
+        //     completionHandler(nil)
+        // }
     }
     
     public func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)? = nil) {
-        if let applePayAPIEnabled = settings?.applePayAPIEnabled, applePayAPIEnabled {
-            if let completionHandler = completionHandler {
-                completionHandler(nil, nil)
-            }
-            return
-        }
-        super.evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
+        // if let applePayAPIEnabled = settings?.applePayAPIEnabled, applePayAPIEnabled {
+        //     if let completionHandler = completionHandler {
+        //         completionHandler(nil, nil)
+        //     }
+        //     return
+        // }
+        // super.evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
     }
     
     @available(macOS 11.0, *)
     public func evaluateJavaScript(_ javaScript: String, frame: WKFrameInfo? = nil, contentWorld: WKContentWorld, completionHandler: ((Result<Any, Error>) -> Void)? = nil) {
-        if let applePayAPIEnabled = settings?.applePayAPIEnabled, applePayAPIEnabled {
-            return
-        }
-        super.evaluateJavaScript(javaScript, in: frame, in: contentWorld, completionHandler: completionHandler)
+        // if let applePayAPIEnabled = settings?.applePayAPIEnabled, applePayAPIEnabled {
+        //     return
+        // }
+        // super.evaluateJavaScript(javaScript, in: frame, in: contentWorld, completionHandler: completionHandler)
     }
     
     public func evaluateJavascript(source: String, completionHandler: ((Any?) -> Void)? = nil) {
-        injectDeferredObject(source: source, withWrapper: nil, completionHandler: completionHandler)
+        // injectDeferredObject(source: source, withWrapper: nil, completionHandler: completionHandler)
     }
     
     @available(macOS 11.0, *)
     public func evaluateJavascript(source: String, contentWorld: WKContentWorld, completionHandler: ((Any?) -> Void)? = nil) {
-        injectDeferredObject(source: source, contentWorld: contentWorld, withWrapper: nil, completionHandler: completionHandler)
+        // injectDeferredObject(source: source, contentWorld: contentWorld, withWrapper: nil, completionHandler: completionHandler)
     }
     
     @available(macOS 11.0, *)
@@ -955,17 +955,17 @@ public class InAppWebView: WKWebView, WKUIDelegate,
             .replacingOccurrences(of: PluginScriptsUtil.VAR_FUNCTION_BODY, with: jsToInject)
             .replacingOccurrences(of: PluginScriptsUtil.VAR_RESULT_UUID, with: resultUuid)
         
-        evaluateJavaScript(jsToInject) { (value, error) in
-            if let error = error {
-                let userInfo = (error as NSError).userInfo
-                let errorMessage = userInfo["WKJavaScriptExceptionMessage"] ??
-                                   userInfo["NSLocalizedDescription"] as? String ??
-                                   error.localizedDescription
-                self.channelDelegate?.onConsoleMessage(message: String(describing: errorMessage), messageLevel: 3)
-                completionHandler?(nil)
-                self.callAsyncJavaScriptBelowMacOS11Results.removeValue(forKey: resultUuid)
-            }
-        }
+        // evaluateJavaScript(jsToInject) { (value, error) in
+        //     if let error = error {
+        //         let userInfo = (error as NSError).userInfo
+        //         let errorMessage = userInfo["WKJavaScriptExceptionMessage"] ??
+        //                            userInfo["NSLocalizedDescription"] as? String ??
+        //                            error.localizedDescription
+        //         self.channelDelegate?.onConsoleMessage(message: String(describing: errorMessage), messageLevel: 3)
+        //         completionHandler?(nil)
+        //         self.callAsyncJavaScriptBelowMacOS11Results.removeValue(forKey: resultUuid)
+        //     }
+        // }
     }
     
     public func injectJavascriptFileFromUrl(urlFile: String, scriptHtmlTagAttributes: [String:Any?]?) {
@@ -2229,11 +2229,11 @@ public class InAppWebView: WKWebView, WKUIDelegate,
     }
     
     public func scrollTo(x: Int, y: Int, animated: Bool) {
-        evaluateJavaScript("window.scrollTo({left: \(x), top: \(y), behavior: \(animated ? "'smooth'" : "'auto'")})")
+        // evaluateJavaScript("window.scrollTo({left: \(x), top: \(y), behavior: \(animated ? "'smooth'" : "'auto'")})")
     }
     
     public func scrollBy(x: Int, y: Int, animated: Bool) {
-        evaluateJavaScript("window.scrollBy({left: \(x), top: \(y), behavior: \(animated ? "'smooth'" : "'auto'")})")
+        // evaluateJavaScript("window.scrollBy({left: \(x), top: \(y), behavior: \(animated ? "'smooth'" : "'auto'")})")
     }
     
     
@@ -2411,23 +2411,23 @@ public class InAppWebView: WKWebView, WKUIDelegate,
     }
     
     public func getContentHeight(completionHandler: @escaping ((Int64?, Error?) -> Void)) {
-        evaluateJavaScript("document.body.scrollHeight") { scrollHeight, error in
-            if let error = error {
-                completionHandler(nil, error)
-            } else {
-                completionHandler(Int64(scrollHeight as? Double ?? 0.0), nil)
-            }
-        }
+        // evaluateJavaScript("document.body.scrollHeight") { scrollHeight, error in
+        //     if let error = error {
+        //         completionHandler(nil, error)
+        //     } else {
+        //         completionHandler(Int64(scrollHeight as? Double ?? 0.0), nil)
+        //     }
+        // }
     }
     
     public func getContentWidth(completionHandler: @escaping ((Int64?, Error?) -> Void)) {
-        evaluateJavaScript("document.body.scrollWidth") { scrollWidth, error in
-            if let error = error {
-                completionHandler(nil, error)
-            } else {
-                completionHandler(Int64(scrollWidth as? Double ?? 0.0), nil)
-            }
-        }
+        // evaluateJavaScript("document.body.scrollWidth") { scrollWidth, error in
+        //     if let error = error {
+        //         completionHandler(nil, error)
+        //     } else {
+        //         completionHandler(Int64(scrollWidth as? Double ?? 0.0), nil)
+        //     }
+        // }
     }
     
     public func getOriginalUrl() -> URL? {
@@ -2436,7 +2436,7 @@ public class InAppWebView: WKWebView, WKUIDelegate,
     
     public func getSelectedText(completionHandler: @escaping (Any?, Error?) -> Void) {
         if configuration.preferences.javaScriptEnabled {
-            evaluateJavaScript(PluginScriptsUtil.GET_SELECTED_TEXT_JS_SOURCE, completionHandler: completionHandler)
+            // evaluateJavaScript(PluginScriptsUtil.GET_SELECTED_TEXT_JS_SOURCE, completionHandler: completionHandler)
         } else {
             completionHandler(nil, nil)
         }
@@ -2453,13 +2453,13 @@ public class InAppWebView: WKWebView, WKUIDelegate,
     }
     
     public func isSecureContext(completionHandler: @escaping (_ isSecureContext: Bool) -> Void) {
-        evaluateJavascript(source: "window.isSecureContext") { (isSecureContext) in
-            if let isSecureContext = isSecureContext {
-                completionHandler(isSecureContext as? Bool ?? false)
-                return
-            }
-            completionHandler(false)
-        }
+        // evaluateJavascript(source: "window.isSecureContext") { (isSecureContext) in
+        //     if let isSecureContext = isSecureContext {
+        //         completionHandler(isSecureContext as? Bool ?? false)
+        //         return
+        //     }
+        //     completionHandler(false)
+        // }
     }
     
     public func canScrollVertically(completionHandler: @escaping ((Bool, Error?) -> Void)) {
@@ -2518,7 +2518,7 @@ public class InAppWebView: WKWebView, WKUIDelegate,
             window.postMessage(\(message.jsData), '\(url)', \(portsString));
         })();
         """
-        evaluateJavascript(source: source, completionHandler: completionHandler)
+        // evaluateJavascript(source: source, completionHandler: completionHandler)
         message.dispose()
     }
     
@@ -2539,23 +2539,23 @@ public class InAppWebView: WKWebView, WKUIDelegate,
     }
     
     public func getScrollX(completionHandler: @escaping ((Int64?, Error?) -> Void)) {
-        evaluateJavaScript("window.scrollX") { scrollX, error in
-            if let error = error {
-                completionHandler(nil, error)
-            } else {
-                completionHandler(Int64(scrollX as? Double ?? 0.0), nil)
-            }
-        }
+        // evaluateJavaScript("window.scrollX") { scrollX, error in
+        //     if let error = error {
+        //         completionHandler(nil, error)
+        //     } else {
+        //         completionHandler(Int64(scrollX as? Double ?? 0.0), nil)
+        //     }
+        // }
     }
     
     public func getScrollY(completionHandler: @escaping ((Int64?, Error?) -> Void)) {
-        evaluateJavaScript("window.scrollY") { scrollY, error in
-            if let error = error {
-                completionHandler(nil, error)
-            } else {
-                completionHandler(Int64(scrollY as? Double ?? 0.0), nil)
-            }
-        }
+        // evaluateJavaScript("window.scrollY") { scrollY, error in
+        //     if let error = error {
+        //         completionHandler(nil, error)
+        //     } else {
+        //         completionHandler(Int64(scrollY as? Double ?? 0.0), nil)
+        //     }
+        // }
     }
     
     public func runWindowBeforeCreatedCallbacks() {

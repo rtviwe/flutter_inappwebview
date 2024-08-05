@@ -58,16 +58,16 @@ public class WebMessageChannel: FlutterMethodCallDelegate {
             port.dispose()
         }
         ports.removeAll()
-        webView?.evaluateJavascript(source: """
-        (function() {
-            var webMessageChannel = \(WEB_MESSAGE_CHANNELS_VARIABLE_NAME)["\(id)"];
-            if (webMessageChannel != null) {
-                webMessageChannel.port1.close();
-                webMessageChannel.port2.close();
-                delete \(WEB_MESSAGE_CHANNELS_VARIABLE_NAME)["\(id)"];
-            }
-        })();
-        """)
+        // webView?.evaluateJavascript(source: """
+        // (function() {
+        //     var webMessageChannel = \(WEB_MESSAGE_CHANNELS_VARIABLE_NAME)["\(id)"];
+        //     if (webMessageChannel != null) {
+        //         webMessageChannel.port1.close();
+        //         webMessageChannel.port2.close();
+        //         delete \(WEB_MESSAGE_CHANNELS_VARIABLE_NAME)["\(id)"];
+        //     }
+        // })();
+        // """)
         webView = nil
         plugin = nil
     }

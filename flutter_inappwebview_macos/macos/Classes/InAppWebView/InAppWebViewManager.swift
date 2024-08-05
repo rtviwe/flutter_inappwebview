@@ -60,23 +60,23 @@ public class InAppWebViewManager: ChannelDelegate {
     public func getDefaultUserAgent(completionHandler: @escaping (_ value: String?) -> Void) {
         if defaultUserAgent == nil {
             webViewForUserAgent = WKWebView()
-            webViewForUserAgent?.evaluateJavaScript("navigator.userAgent") { (value, error) in
+            // webViewForUserAgent?.evaluateJavaScript("navigator.userAgent") { (value, error) in
 
-                if error != nil {
-                    print("Error occurred to get userAgent")
-                    self.webViewForUserAgent = nil
-                    completionHandler(nil)
-                    return
-                }
+            //     if error != nil {
+            //         print("Error occurred to get userAgent")
+            //         self.webViewForUserAgent = nil
+            //         completionHandler(nil)
+            //         return
+            //     }
 
-                if let unwrappedUserAgent = value as? String {
-                    self.defaultUserAgent = unwrappedUserAgent
-                    completionHandler(self.defaultUserAgent)
-                } else {
-                    print("Failed to get userAgent")
-                }
-                self.webViewForUserAgent = nil
-            }
+            //     if let unwrappedUserAgent = value as? String {
+            //         self.defaultUserAgent = unwrappedUserAgent
+            //         completionHandler(self.defaultUserAgent)
+            //     } else {
+            //         print("Failed to get userAgent")
+            //     }
+            //     self.webViewForUserAgent = nil
+            // }
         } else {
             completionHandler(defaultUserAgent)
         }

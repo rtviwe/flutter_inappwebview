@@ -34,13 +34,13 @@ public class WebMessageChannel: FlutterMethodCallDelegate {
     public func initJsInstance(webView: InAppWebView, completionHandler: ((WebMessageChannel?) -> Void)? = nil) {
         self.webView = webView
         if let webView = self.webView {
-            webView.evaluateJavascript(source: """
-            (function() {
-                \(WEB_MESSAGE_CHANNELS_VARIABLE_NAME)["\(id)"] = new MessageChannel();
-            })();
-            """) { (_) in
-                completionHandler?(self)
-            }
+            // webView.evaluateJavascript(source: """
+            // (function() {
+            //     \(WEB_MESSAGE_CHANNELS_VARIABLE_NAME)["\(id)"] = new MessageChannel();
+            // })();
+            // """) { (_) in
+            //     completionHandler?(self)
+            // }
         } else {
             completionHandler?(nil)
         }
@@ -59,16 +59,16 @@ public class WebMessageChannel: FlutterMethodCallDelegate {
             port.dispose()
         }
         ports.removeAll()
-        webView?.evaluateJavascript(source: """
-        (function() {
-            var webMessageChannel = \(WEB_MESSAGE_CHANNELS_VARIABLE_NAME)["\(id)"];
-            if (webMessageChannel != null) {
-                webMessageChannel.port1.close();
-                webMessageChannel.port2.close();
-                delete \(WEB_MESSAGE_CHANNELS_VARIABLE_NAME)["\(id)"];
-            }
-        })();
-        """)
+        // webView?.evaluateJavascript(source: """
+        // (function() {
+        //     var webMessageChannel = \(WEB_MESSAGE_CHANNELS_VARIABLE_NAME)["\(id)"];
+        //     if (webMessageChannel != null) {
+        //         webMessageChannel.port1.close();
+        //         webMessageChannel.port2.close();
+        //         delete \(WEB_MESSAGE_CHANNELS_VARIABLE_NAME)["\(id)"];
+        //     }
+        // })();
+        // """)
         webView = nil
         plugin = nil
     }
